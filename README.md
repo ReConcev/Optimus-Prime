@@ -1,5 +1,6 @@
 # Optimus-Prime
 > Optimal Discovery of Prime Numbers through Symmetric MultiProcessing (SMP)
+> 
 > Copyright 2021.  All rights reserved.
 
 Primes are of great interest in cryptography and other sciences, but are an NP-Complete or NP-Hard problem, for which "brute force" algorithms have been employed.  In short, the way you determine the next prime is by testing division for previously discovered primes, and as more primes are discovered, the number of tests increase.
