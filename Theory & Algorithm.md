@@ -12,13 +12,12 @@
 4. For prime n, there is a bounded range of prime candidates from n+1 to n^2^, in which primes may be completely determined using the set of all primes up to and including n
 5. The bounded range of prime candidates will contain at least one additional prime (because primes are infinite).
 
-### Thereom
+### Theory
 1. Although NP-Hard by nature, there exists a parallelized, multiprocessing algorithm (aka SMP) to prime discover that can be proven as theorhetically optimal, given the current nature of NUMA computer technology, and Rust "correctness".
 2. Rust is performant by design.  We talk a lot about memory safety, but speak little about memory being freed immediately when no longer required.  This is the heart of NUMA correctness, or correctness in any processing architecture that I can conceive of.  Therefore, Rust achieves the theorhetically "leanest" use of memory resources.
 3. Rust achieves "fearless concurrency".  The interior mutability pattern throws a mutex lock (blocks read threads) just long enough (aka theorhetical minimal) to complete the write by one owner thread, and then returns it to immutable guarantees and multithreaded reads.  This allows the fastest interhost immutable sharing (aka localhost, node in cluster) ++[SMP](https://en.wikipedia.org/wiki/Symmetric_multiprocessing) through multithreading++ model, preferably  within a [GPGPU](https://en.wikipedia.org/wiki/General-purpose_computing_on_graphics_processing_units) infrastructure, are similar SMP architecture.
 
 ### Algorithmic Specification
-
 1. For each new prime discovered through testing (aka largest prime starting with 2), *denoted **(++n++)***.
     > Preload every prime already discovered to "jumpstart" the search for the next largest prime.  It helps that primes get scarcer, with a growth defined in the Prime Theorem.
 2.  a new "chunk" or "universe" of tests may be spawned testing all previous discovered primes in parallel against an ordered binary array indexed by candidates (aka VecDeque -- "a double-ended queue implemented with a growable ring buffer") within the bounded range of ***++n+1++*** through ***++n^2^++*** in a "complete" fashion.  ***++No other prime determination can be performed until the primes within this range are discovered, AND there must be at least one new prime within this range.++***  When discovered, recursion occurs for the next bounded range.
